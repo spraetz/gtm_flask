@@ -3,7 +3,9 @@ import os
 
 app = Flask(__name__)
 
-settings = {}
+settings = {
+    "environment": os.environ.get("environment", "wtf")
+}
 
 
 @app.route('/')
@@ -12,5 +14,4 @@ def hello_world():
 
 
 if __name__ == '__main__':
-    settings["environment"] = os.environ.get("environment", "wtf")
     app.run()
