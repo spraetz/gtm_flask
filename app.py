@@ -10,6 +10,6 @@ def hello_world():
 
 
 if __name__ == '__main__':
-    app.config["ENVIRONMENT"] = os.environ['environment']
+    app.config["ENVIRONMENT"] = os.environ.get("environment", "wtf")
     app.config["DEBUG"] = True
     app.run()
