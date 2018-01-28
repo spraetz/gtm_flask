@@ -7,6 +7,8 @@ class Config(object):
     TESTING = False
     CSRF_ENABLED = True
     SECRET_KEY = 'this-really-does-not-need-to-be-changed'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 class ProductionConfig(Config):
     NAME = "Production"
@@ -23,6 +25,7 @@ class DevelopmentConfig(Config):
     NAME = "DEVELOPMENT"
     DEVELOPMENT = True
     DEBUG = True
+    SQLALCHEMY_DATABASE_URI = "postgresql://localhost/gtm_development"
 
 
 class TestingConfig(Config):
