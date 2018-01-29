@@ -16,7 +16,7 @@ def hello_world():
     #foo.str = "asdfasfds"
     #db.session.add(foo)
     #db.session.commit()
-    # foo = Test.query.all()
+    foo = Test.query.all()
     return 'Hello {}!'.format(app.config["NAME"])
 
 

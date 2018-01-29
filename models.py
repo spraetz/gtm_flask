@@ -6,9 +6,7 @@ class Test(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     str = db.Column(db.String())
+    int = db.Column(db.Integer)
 
     def __repr__(self):
         return '<id {}>'.format(self.id)
-
-
-db.create_all()
