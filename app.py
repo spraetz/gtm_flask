@@ -17,7 +17,7 @@ def hello_world():
     #db.session.add(foo)
     #db.session.commit()
     foo = Test.query.all()
-    return 'Hello {}!'.format(app.config["NAME"])
+    return 'Hello {}!'.format(len(foo))
 
 
 if __name__ == '__main__':
