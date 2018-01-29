@@ -2,7 +2,7 @@
 
 This is a subscription management app for an email newsletter.
 
-This was setup largely using[this](https://realpython.com/blog/python/flask-by-example-part-2-postgres-sqlalchemy-and-alembic/)guide. 
+This was setup largely using [this](https://realpython.com/blog/python/flask-by-example-part-2-postgres-sqlalchemy-and-alembic/) guide. 
 
 It contains two special branches linked to Heroku accounts:
 * staging
