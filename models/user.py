@@ -27,13 +27,8 @@ class User(db.Model):
     def get_id(self):
         return str(self.id).decode('utf8')
 
-
-class Test(db.Model):
-    __tablename__ = 'test'
-
-    id = db.Column(db.Integer, primary_key=True)
-    str = db.Column(db.String())
-    int = db.Column(db.Integer)
-
-    def __repr__(self):
-        return '<id {}>'.format(self.id)
+    @classmethod
+    def create_user(cls, email, password):
+        user = cls(email=email, password=password)
+        db.session.add(user)
+        db.session.commit()

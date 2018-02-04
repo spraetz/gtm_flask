@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GTM - Login</title>
+</head>
+<body>
+    <form method="POST" action="/login">
+        {{ form.csrf_token }}
+        {{ form.email.label }} {{ form.email(size=20) }}
+        {{ form.password.label }} {{ form.password(size=20) }}
+        <input type="submit" value="Login">
+    </form>
+</body>
+</html>

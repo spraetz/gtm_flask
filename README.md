@@ -10,9 +10,13 @@ It contains two special branches linked to Heroku accounts:
 
 Do your work in master and simply push to staging or production to deploy.
 
+## Running the application locally
+
+`export environment=config.DevelopmentConfig && python app.py`
+
 ## Database Migrations
 
-If you omake changes to the local ORM, you'll need to reflect them in the database.
+If you make changes to the local ORM, you'll need to reflect them in the database.
 To do so, run the following commands: 
 ```
 python manage.py db migrate
