@@ -12,7 +12,13 @@ Do your work in master and simply push to staging or production to deploy.
 
 ## Running the application locally
 
+To run the app, use this terminal command
+
 `export environment=config.DevelopmentConfig && python app.py`
+
+### First time running in any environment
+
+The first time you run the app, you'll need to bootstrap the database with the default user.  To do that, simply hit this URL:`localhost:5000/bootstrap`
 
 ## Database Migrations
 

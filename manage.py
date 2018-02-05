@@ -2,13 +2,13 @@ import os
 from flask.ext.script import Manager
 from flask.ext.migrate import Migrate, MigrateCommand
 
-from app import app, db
+from app import run, db
 
 
-app.config.from_object(os.environ['environment'])
+run.config.from_object(os.environ['environment'])
 
-migrate = Migrate(app, db)
-manager = Manager(app)
+migrate = Migrate(run, db)
+manager = Manager(run)
 
 manager.add_command('db', MigrateCommand)
 
