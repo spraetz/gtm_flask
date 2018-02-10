@@ -1,12 +1,12 @@
-from flask import Flask
-
-from modules.app.routes import app_blueprint
-from modules.public.routes import public_blueprint
-from modules.models.user import User
-from modules.models.database import db
 import os
+
+from flask import Flask
 from flask_login import LoginManager
 
+from modules.app.routes import app_blueprint
+from modules.models.database import db
+from modules.models.user import User
+from modules.public.routes import public_blueprint
 
 app = Flask(__name__)
 app.config.from_object(os.environ['environment'])

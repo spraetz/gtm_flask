@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for
-from flask_login import login_user
+from flask_login import login_user, logout_user, current_user
 
 from forms import LoginForm
 from modules.models.user import User
@@ -15,23 +15,30 @@ def show_index():
 @public_blueprint.route("login")
 def show_login():
     form = LoginForm()
+    print "text is here"
     return render_template("login.html", form=form)
 
 
 @public_blueprint.route("login", methods=["POST"])
 def do_login():
     form = LoginForm()
+    print "Im here"
     if form.validate_on_submit():
-        user_to_log_in = User.query.filter_by(email="admin@gtmarketing.com").filter_by(password="123456").first()
-        print user_to_log_in
-        login_user(user_to_log_in)
-        return redirect(url_for("app_blueprint.show_app"))
+        user_to_log_in = User.query.filter_by(email=form.email.data).filter_by(password=form.password.data).first()
+        if user_to_log_in:
+            login_user(user_to_log_in)
+            return redirect(url_for("app_blueprint.show_app"))
     return render_template("login.html", form=form)
+
+
+@public_blueprint.route("logout")
+def do_logout():
+    logout_user()
+    return redirect(url_for("public_blueprint.show_login"))
 
 
 @public_blueprint.route("bootstrap")
 def bootstrap_database():
-    print "IM in here"
     admin_user = User.query.filter_by(email="admin@gtmarketing.com").first()
 
     # If we don't find an admin user, create one.
