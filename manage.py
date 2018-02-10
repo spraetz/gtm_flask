@@ -2,8 +2,8 @@ import os
 from flask.ext.script import Manager
 from flask.ext.migrate import Migrate, MigrateCommand
 
-from app import run, db
-
+from modules import db
+import run
 
 run.config.from_object(os.environ['environment'])
 

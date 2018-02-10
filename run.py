@@ -1,8 +1,12 @@
 from flask import Flask
-from database import db
+
+from modules.app.routes import app_blueprint
+from modules.public.routes import public_blueprint
+from modules.models.user import User
+from modules.models.database import db
 import os
-from flask_login import LoginManager, login_required
-from routes.public import public_blueprint
+from flask_login import LoginManager
+
 
 app = Flask(__name__)
 app.config.from_object(os.environ['environment'])
@@ -13,18 +17,12 @@ login_manager.init_app(app)
 
 @login_manager.user_loader
 def load_user(user_id):
-    import models.user
-    return models.user.User.query.filter_by(id=user_id).first()
-    pass
+    return User.query.filter_by(id=user_id).first()
 
 
 app.register_blueprint(public_blueprint)
+app.register_blueprint(app_blueprint)
 db.init_app(app)
-
-@app.route("/app")
-@login_required
-def show_app():
-    return "Hello!"
 
 
 if __name__ == '__main__':
