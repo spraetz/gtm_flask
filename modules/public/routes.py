@@ -15,14 +15,12 @@ def show_index():
 @public_blueprint.route("login")
 def show_login():
     form = LoginForm()
-    print "text is here"
     return render_template("login.html", form=form)
 
 
 @public_blueprint.route("login", methods=["POST"])
 def do_login():
     form = LoginForm()
-    print "Im here"
     if form.validate_on_submit():
         user_to_log_in = User.query.filter_by(email=form.email.data).filter_by(password=form.password.data).first()
         if user_to_log_in:

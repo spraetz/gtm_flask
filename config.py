@@ -10,6 +10,7 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+
 class ProductionConfig(Config):
     NAME = "Production"
     DEBUG = False
@@ -30,4 +31,5 @@ class DevelopmentConfig(Config):
 
 class TestingConfig(Config):
     NAME = "TESTING"
+    SQLALCHEMY_DATABASE_URI = "postgresql://localhost/gtm_testing"
     TESTING = True
