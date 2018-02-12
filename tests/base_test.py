@@ -1,9 +1,10 @@
+from __future__ import print_function
 from flask_testing import TestCase
 
 from run import db, create_app
 
 
-class MyTest(TestCase):
+class BaseTest(TestCase):
 
     def create_app(self):
 
@@ -15,10 +16,8 @@ class MyTest(TestCase):
         return app
 
     def setUp(self):
-
         db.create_all()
 
     def tearDown(self):
-
         db.session.remove()
         db.drop_all()

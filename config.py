@@ -33,3 +33,4 @@ class TestingConfig(Config):
     NAME = "TESTING"
     SQLALCHEMY_DATABASE_URI = "postgresql://localhost/gtm_testing"
     TESTING = True
+    WTF_CSRF_ENABLED = False
