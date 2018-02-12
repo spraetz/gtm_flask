@@ -20,6 +20,12 @@ To run the app, use this terminal command
 
 The first time you run the app, you'll need to bootstrap the database with the default user.  To do that, simply hit this URL:`localhost:5000/bootstrap`
 
+### Running Tests
+
+Use the following command in the `gtm_flask` directory to run tests:
+
+`export environment=config.TestingConfig && nosetests`
+
 ## Database Migrations
 
 If you make changes to the local ORM, you'll need to reflect them in the database.
