@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Accounts{% endblock %}
+{% block content %}
+
+
+    <a href=""><button type="button" class="btn btn-primary">Create Account</button></a>
+
+    <ul>
+        {% for account in accounts %}
+            <li><a href="{{ url_for("app_blueprint.show_account", account_id=account.id) }}">{{ account.email }}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock content %}
