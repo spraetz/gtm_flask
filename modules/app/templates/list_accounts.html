@@ -3,7 +3,8 @@
 {% block content %}
 
 
-    <a href=""><button type="button" class="btn btn-primary">Create Account</button></a>
+    <a href="{{ url_for("app_blueprint.show_create_account") }}"><button type="button" class="btn btn-primary">Create Account</button></a>
+    <a href="{{ url_for("app_blueprint.show_create_account") }}"><button type="button" class="btn btn-secondary">Export to CSV</button></a>
 
     <ul>
         {% for account in accounts %}

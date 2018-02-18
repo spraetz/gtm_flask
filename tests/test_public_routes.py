@@ -27,7 +27,7 @@ class TestDoLogin(BaseTest):
             "password": self.user.password,
         }
         resp = self.client.post("/login", data=form_data, follow_redirects=False)
-        self.assert_redirects(resp, "/app", resp.data)
+        self.assert_redirects(resp, "/app/", resp.data)
 
     def test_wrong_password(self):
         form_data = {

@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% block title %}
-    {{ account.email }}
+    {{ account.email if account else "Create Account"}}
 {% endblock title %}
 {% block content %}
-    <form method="POST" class="is-invalid" action="{{ url_for("app_blueprint.do_save_account", account_id=account.id) }}">
+    <form method="POST" class="is-invalid" action="{{ url_for("app_blueprint.do_save_account", account_id=account.id) if account else url_for("app_blueprint.do_create_account") }}">
         {% if form.errors %}
             <div style="color:red">
                 <ul class="errors">
@@ -18,29 +18,53 @@
         {{ form.csrf_token }}
         <div class="form-group row">
             <label for="email" class="col-sm-1 col-form-label">{{ form.email.label }}</label>
-            <div class="col-sm-4">
-                {{ form.email(class="form-control", id="email", placeholder="Email", type="email", value=account.email, required=true) }}
+            <div class="col-sm-7">
+                {{ form.email(class="form-control", id="email", placeholder="Email", type="email", value=account.email if account and account.email, required=true) }}
             </div>
         </div>
         <div class="form-group row">
             <label class="col-sm-1 col-form-label">Name</label>
-            <div class="col-sm-2">
-                {{ form.first_name(class="form-control", id="firstName", placeholder="First Name", type="text", value=account.first_name if account.first_name is not none) }}
+            <div class="col-sm-3">
+                {{ form.first_name(class="form-control", id="firstName", placeholder="First Name", type="text", value=account.first_name if account and account.first_name) }}
             </div>
-            <div class="col-sm-2">
-                {{ form.last_name(class="form-control", id="lastName", placeholder="Last Name", type="text", value=account.last_name if account.last_name is not none) }}
+            <div class="col-sm-4">
+                {{ form.last_name(class="form-control", id="lastName", placeholder="Last Name", type="text", value=account.last_name if account and account.last_name) }}
             </div>
         </div>
         <div class="form-group row">
             <label class="col-sm-1 col-form-label">Phone</label>
-            <div class="col-sm-2">
-                {{ form.home_phone(class="form-control", id="homePhone", placeholder="Home Phone", type="text", value=account.home_phone if account.home_phone is not none) }}
+            <div class="col-sm-3">
+                {{ form.home_phone(class="form-control", id="homePhone", placeholder="Home Phone", type="text", value=account.home_phone if account and account.home_phone) }}
+            </div>
+            <label class="col-sm-1 col-form-label">Mobile</label>
+            <div class="col-sm-3">
+                {{ form.mobile_phone(class="form-control", id="mobilePhone", placeholder="Mobile Phone", type="text", value=account.mobile_phone if account and account.mobile_phone) }}
             </div>
         </div>
         <div class="form-group row">
-            <label class="col-sm-1 col-form-label">Mobile</label>
+            <label class="col-sm-1 col-form-label">Address</label>
+            <div class="col-sm-7">
+                {{ form.street_address(class="form-control", id="streetAddress", placeholder="Street Address", type="text", value=account.street_address if account and account.street_address) }}
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-1 col-form-label"></label>
+            <div class="col-sm-7">
+                {{ form.secondary_address(class="form-control", id="secondaryAddress", placeholder="", type="text", value=account.secondary_address if account and account.secondary_address) }}
+            </div>
+        </div>
+       <div class="form-group row">
+            <label class="col-sm-1 col-form-label">City</label>
             <div class="col-sm-2">
-                {{ form.mobile_phone(class="form-control", id="mobilePhone", placeholder="Mobile Phone", type="text", value=account.mobile_phone if account.mobile_phone is not none) }}
+                {{ form.city(class="form-control", id="city", placeholder="City", type="text", value=account.city if account and account.city) }}
+            </div>
+           <label class="col-sm-1 col-form-label">State</label>
+            <div class="col-sm-1">
+                {{ form.state(class="form-control", id="state", placeholder="State", type="text", value=account.state if account and account.state) }}
+            </div>
+           <label class="col-sm-1 col-form-label">Zip</label>
+            <div class="col-sm-2">
+                {{ form.zip_code(class="form-control", id="zipCode", placeholder="Zip Code", type="text", value=account.zip_code if account and account.zip_code) }}
             </div>
         </div>
         <div class="form-group row">
@@ -49,5 +73,14 @@
             </div>
         </div>
     </form>
+    {% if account and account.id %}
+    <form method="POST" action="{{ url_for("app_blueprint.do_delete_account", account_id=account.id) }}" onsubmit="return confirm('Do you really want to delete this account?');">
+        <div class="form-group row">
+            <div class="col-sm-10">
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </div>
+        </div>
+    </form>
+    {% endif %}
 
 {% endblock content %}

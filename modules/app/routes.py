@@ -34,7 +34,7 @@ def show_account(account_id):
 @login_required
 def do_save_account(account_id):
     account = Account.get_by_id(account_id)
-    
+
     form = AccountForm(request.form)
     form.populate_obj(account)
 
@@ -43,3 +43,32 @@ def do_save_account(account_id):
         return redirect(url_for("app_blueprint.show_accounts"))
 
     return render_template("account.html", form=form, account=account)
+
+
+@app_blueprint.route("accounts/create")
+@login_required
+def show_create_account():
+    form = AccountForm(request.form)
+    return render_template("account.html", form=form)
+
+
+@app_blueprint.route("accounts/create", methods=["POST"])
+@login_required
+def do_create_account():
+    form = AccountForm(request.form)
+    account = Account()
+    form.populate_obj(account)
+
+    if form.validate_on_submit():
+        account.save()
+        return redirect(url_for("app_blueprint.show_accounts"))
+
+    return render_template("account.html", form=form)
+
+
+@app_blueprint.route("accounts/<account_id>/delete", methods=["POST"])
+@login_required
+def do_delete_account(account_id):
+    account = Account.get_by_id(account_id)
+    account.delete()
+    return redirect(url_for("app_blueprint.show_accounts"))

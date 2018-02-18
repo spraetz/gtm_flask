@@ -37,8 +37,9 @@ class BaseTest(TestCase):
             "password": user.password
         }
 
-        self.assert_redirects(self.client.post("/login", data=form_data), "/app")
+        self.assert_redirects(self.client.post("/login", data=form_data), "/app/")
 
     def logout_user(self):
         self.assert_redirects(self.client.get("/logout"), "/login")
-        self.assert_401(self.client.get("app"))
+        response = self.client.get("/app/")
+        self.assert_401(response, response.data)

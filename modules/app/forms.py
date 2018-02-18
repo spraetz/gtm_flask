@@ -15,3 +15,8 @@ class AccountForm(FlaskForm):
                                                             Account.home_phone.property.columns[0].type.length,
                                                             "Phone numbers must be 10 numbers (eg: 8152734354)")])
 
+    street_address = StringField("Street")
+    secondary_address = StringField("Secondary")
+    city = StringField("City")
+    state = StringField("State")
+    zip_code = StringField("Zip Code")

@@ -25,7 +25,7 @@ def do_login():
         user_to_log_in = User.query.filter_by(email=form.email.data).filter_by(password=form.password.data).first()
         if user_to_log_in:
             login_user(user_to_log_in)
-            return redirect(url_for("app_blueprint.show_app"))
+            return redirect(url_for("app_blueprint.show_home"))
     return render_template("login.html", form=form), 400
 
 
