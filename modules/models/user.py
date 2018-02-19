@@ -1,7 +1,8 @@
+from base import BaseModel
 from database import db
 
 
-class User(db.Model):
+class User(BaseModel):
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -29,6 +30,5 @@ class User(db.Model):
 
     @classmethod
     def create_user(cls, email, password):
-        user = cls(email=email, password=password)
-        db.session.add(user)
-        db.session.commit()
+        user = User(email=email, password=password)
+        user.save()

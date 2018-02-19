@@ -1,4 +1,6 @@
 from __future__ import print_function
+
+from flask import url_for
 from flask_testing import TestCase
 
 from run import db, create_app
@@ -26,9 +28,10 @@ class BaseTest(TestCase):
 
     @staticmethod
     def create_user(email="admin@gtmarketing.com", password="123456"):
-        user = User(email=email, password=password)
-        db.session.add(user)
-        db.session.commit()
+        user = User()
+        user.email = email
+        user.password = password
+        user.save()
         return user
 
     @staticmethod
@@ -45,9 +48,11 @@ class BaseTest(TestCase):
             "password": user.password
         }
 
-        self.assert_redirects(self.client.post("/login", data=form_data), "/app/")
+        self.assert_redirects(self.client.post(url_for("public_blueprint.do_login"), data=form_data),
+                              url_for("app_blueprint.show_home"))
 
     def logout_user(self):
-        self.assert_redirects(self.client.get("/logout"), "/login")
-        response = self.client.get("/app/")
+        self.assert_redirects(self.client.get(url_for("public_blueprint.do_logout")),
+                              url_for("public_blueprint.show_login"))
+        response = self.client.get(url_for("app_blueprint.show_home"))
         self.assert_401(response, response.data)

@@ -127,7 +127,17 @@ class TestDoCreateAccount(AppTest):
 
     # TODO
     def test_failure_duplicate_email(self):
-        pass
+        form_data = {
+            "email": self.account.email,
+            "first_name": "Foo",
+            "last_name": "Bar",
+            "home_phone": "0987654321",
+            "mobile_phone": "0987654321"
+        }
+
+        response = self.client.post(self.get_url(), data=form_data, follow_redirects=True)
+        self.assert_400(response)
+        self.assertIn("<label for=\"email\">Email</label>: This field is required.", response.data, response.data)
 
 
 class TestDoSaveAccount(AppTest):

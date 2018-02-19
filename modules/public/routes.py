@@ -37,7 +37,7 @@ def do_logout():
 
 
 @public_blueprint.route("bootstrap")
-def bootstrap_database():
+def do_bootstrap_database():
     admin_user = User.query.filter_by(email="admin@gtmarketing.com").first()
 
     # If we don't find an admin user, create one.

@@ -2,7 +2,7 @@ from database import db
 from base import BaseModel
 
 
-class Account(BaseModel, db.Model):
+class Account(BaseModel):
     __tablename__ = "accounts"
 
     id = db.Column(db.Integer, primary_key=True)

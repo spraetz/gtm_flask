@@ -1,7 +1,11 @@
 from database import db
 
 
-class BaseModel(object):
+class BaseModel(db.Model):
+    # This is required to make this a real base class:
+    # http://docs.sqlalchemy.org/en/latest/orm/extensions/declarative/api.html#abstract
+    __abstract__ = True
+
     @classmethod
     def get_by_id(cls, id_to_search_for):
         return cls.query.filter_by(id=id_to_search_for).first()
