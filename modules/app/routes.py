@@ -63,7 +63,7 @@ def do_create_account():
         account.save()
         return redirect(url_for("app_blueprint.show_accounts"))
 
-    return render_template("account.html", form=form)
+    return render_template("account.html", form=form), 400
 
 
 @app_blueprint.route("accounts/<account_id>/delete", methods=["POST"])

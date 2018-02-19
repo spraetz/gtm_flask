@@ -23,14 +23,3 @@ class Account(BaseModel, db.Model):
 
     def __repr__(self):
         return "<Account object: id={} email={}>".format(self.id, self.email)
-
-    @classmethod
-    def create_account(cls, email, first_name, last_name, home_phone, mobile_phone):
-        account = cls(
-            email=email,
-            first_name=first_name,
-            last_name=last_name,
-            home_phone=home_phone,
-            mobile_phone=mobile_phone
-        )
-        account.save()

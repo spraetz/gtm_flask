@@ -3,6 +3,7 @@ from flask_testing import TestCase
 
 from run import db, create_app
 from modules.models.user import User
+from modules.models.account import Account
 
 
 class BaseTest(TestCase):
@@ -29,6 +30,13 @@ class BaseTest(TestCase):
         db.session.add(user)
         db.session.commit()
         return user
+
+    @staticmethod
+    def create_account(email="bob@aol.com"):
+        account = Account()
+        account.email = email
+        account.save()
+        return account
 
     def login_user(self, user):
         # Login the user (and make sure it was successful)
