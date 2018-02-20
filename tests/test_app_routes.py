@@ -125,7 +125,6 @@ class TestDoCreateAccount(AppTest):
         self.assert_400(response)
         self.assertIn("<label for=\"email\">Email</label>: This field is required.", response.data, response.data)
 
-    # TODO
     def test_failure_duplicate_email(self):
         form_data = {
             "email": self.account.email,
@@ -137,7 +136,7 @@ class TestDoCreateAccount(AppTest):
 
         response = self.client.post(self.get_url(), data=form_data, follow_redirects=True)
         self.assert_400(response)
-        self.assertIn("<label for=\"email\">Email</label>: This field is required.", response.data, response.data)
+        self.assertIn("<label for=\"email\">Email</label>: Duplicate email detected.", response.data, response.data)
 
 
 class TestDoSaveAccount(AppTest):
@@ -146,8 +145,10 @@ class TestDoSaveAccount(AppTest):
         return url_for("app_blueprint.do_save_account", account_id=self.account.id)
 
     def test_success(self):
+
         form_data = {
-            "email": "test@data.biz",
+            "id": self.account.id,
+            "email": "test2@data.biz",
             "first_name": "Foo",
             "last_name": "Bar",
             "home_phone": "0987654321",
@@ -160,9 +161,25 @@ class TestDoSaveAccount(AppTest):
         self.account.refresh()
         self.assertEquals(self.account.email, form_data["email"])
 
-    # TODO
     def test_failure_duplicate_email(self):
-        pass
+
+        # Create a 2nd account
+        second_account = self.create_account("second@account.biz")
+
+        # Try to update the 1st account to have the same email as the second one.
+        form_data = {
+            "id": self.account.id,
+            "email": second_account.email,
+            "first_name": "Foo",
+            "last_name": "Bar",
+            "home_phone": "0987654321",
+            "mobile_phone": "0987654321"
+        }
+
+        response = self.client.post(self.get_url(), data=form_data, follow_redirects=False)
+        self.assert_400(response)
+
+        self.assertIn("<label for=\"email\">Email</label>: Duplicate email detected.", response.data, response.data)
 
     # TODO
     def test_failure_bad_phone_number(self):

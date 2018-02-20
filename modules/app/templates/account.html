@@ -16,6 +16,9 @@
             </div>
         {% endif %}
         {{ form.csrf_token }}
+        {% if account and account.id %}
+            {{ form.id(id="id", value=account.id) }}
+        {% endif %}
         <div class="form-group row">
             <label for="email" class="col-sm-1 col-form-label">{{ form.email.label }}</label>
             <div class="col-sm-7">

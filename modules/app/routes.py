@@ -1,6 +1,5 @@
 from flask import Blueprint, render_template, request, url_for, redirect
 from flask_login import login_required
-from sqlalchemy.exc import IntegrityError
 
 from forms import AccountForm
 from modules.models.account import Account
@@ -61,12 +60,8 @@ def do_create_account():
     form.populate_obj(account)
 
     if form.validate_on_submit():
-        try:
-            account.save()
-            return redirect(url_for("app_blueprint.show_accounts"))
-        except IntegrityError as e:
-            # TODO
-            pass
+        account.save()
+        return redirect(url_for("app_blueprint.show_accounts"))
 
     return render_template("account.html", form=form), 400
 
