@@ -1,5 +1,7 @@
-from database import db
+from sqlalchemy.orm.attributes import InstrumentedAttribute
+
 from base import BaseModel
+from database import db
 
 
 class Account(BaseModel):
@@ -23,3 +25,10 @@ class Account(BaseModel):
 
     def __repr__(self):
         return "<Account object: id={} email={}>".format(self.id, self.email)
+
+    @classmethod
+    def get_fields(cls):
+        return [attr for attr in dir(Account) if isinstance(getattr(Account, attr), InstrumentedAttribute)]
+
+    def get_field_values(self):
+        return [getattr(self, field) for field in self.get_fields()]

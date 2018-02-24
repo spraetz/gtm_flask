@@ -11,8 +11,8 @@ class Unique:
         check = self.model_class.query.filter(self.model_class.email == field.data).first()
         print(check)
         if 'id' in form:
-            id = form.id.data
+            model_id = form.id.data
         else:
-            id = None
-        if check and (id is None or id != check.id):
+            model_id = None
+        if check and (model_id is None or model_id != check.id):
             raise ValidationError(self.message)

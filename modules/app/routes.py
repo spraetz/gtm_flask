@@ -1,4 +1,7 @@
-from flask import Blueprint, render_template, request, url_for, redirect
+import StringIO
+import csv
+
+from flask import Blueprint, render_template, request, url_for, redirect, make_response
 from flask_login import login_required
 
 from forms import AccountForm
@@ -72,3 +75,20 @@ def do_delete_account(account_id):
     account = Account.get_by_id(account_id)
     account.delete()
     return redirect(url_for("app_blueprint.show_accounts"))
+
+
+@app_blueprint.route("export", methods=["POST"])
+def do_export_accounts():
+    si = StringIO.StringIO()
+    cw = csv.writer(si)
+    accounts = Account.query.all()
+
+    cw.writerow(Account.get_fields())
+
+    for account in accounts:
+        cw.writerow(account.get_field_values())
+
+    output = make_response(si.getvalue())
+    output.headers["Content-Disposition"] = "attachment; filename=export.csv"
+    output.headers["Content-type"] = "text/csv"
+    return output

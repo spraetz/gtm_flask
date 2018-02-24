@@ -178,9 +178,13 @@ class TestDoSaveAccount(AppTest):
 
         response = self.client.post(self.get_url(), data=form_data, follow_redirects=False)
         self.assert_400(response)
-
         self.assertIn("<label for=\"email\">Email</label>: Duplicate email detected.", response.data, response.data)
 
     # TODO
     def test_failure_bad_phone_number(self):
         pass
+
+
+# TODO
+class TestDoExportAccounts(AppTest):
+    pass

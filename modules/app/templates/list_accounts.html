@@ -4,8 +4,9 @@
 
 
     <a href="{{ url_for("app_blueprint.show_create_account") }}"><button type="button" class="btn btn-primary">Create Account</button></a>
-    <a href="{{ url_for("app_blueprint.show_create_account") }}"><button type="button" class="btn btn-secondary">Export to CSV</button></a>
-
+    <form method="POST" action="{{ url_for("app_blueprint.do_export_accounts") }}" style="display:inline">
+        <button type="submit" class="btn btn-secondary">Export to CSV</button>
+    </form>
     <ul>
         {% for account in accounts %}
             <li><a href="{{ url_for("app_blueprint.show_account", account_id=account.id) }}">{{ account.email }}</a></li>
