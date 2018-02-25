@@ -6,6 +6,10 @@ class BaseModel(db.Model):
     # http://docs.sqlalchemy.org/en/latest/orm/extensions/declarative/api.html#abstract
     __abstract__ = True
 
+    id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, default=db.func.now())
+    last_updated = db.Column(db.DateTime, default=db.func.now(), onupdate=db.func.now())
+
     @classmethod
     def get_by_id(cls, id_to_search_for):
         return cls.query.filter_by(id=id_to_search_for).first()

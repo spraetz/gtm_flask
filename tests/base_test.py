@@ -6,6 +6,7 @@ from flask_testing import TestCase
 from run import db, create_app
 from modules.models.user import User
 from modules.models.account import Account
+from modules.models.subscription import Subscription
 
 
 class BaseTest(TestCase):
@@ -40,6 +41,12 @@ class BaseTest(TestCase):
         account.email = email
         account.save()
         return account
+
+    @staticmethod
+    def create_subscription(account):
+        subscription = Subscription(account_id=account.id)
+        subscription.save()
+        return subscription
 
     def login_user(self, user):
         # Login the user (and make sure it was successful)

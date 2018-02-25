@@ -2,12 +2,12 @@ from sqlalchemy.orm.attributes import InstrumentedAttribute
 
 from base import BaseModel
 from database import db
+from subscription import Subscription
 
 
 class Account(BaseModel):
     __tablename__ = "accounts"
 
-    id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(64))
     last_name = db.Column(db.String(64))
     email = db.Column(db.String(255), unique=True)
@@ -32,3 +32,6 @@ class Account(BaseModel):
 
     def get_field_values(self):
         return [getattr(self, field) for field in self.get_fields()]
+
+    def get_subscriptions(self):
+        return Subscription.query.filter_by(account_id=self.id).all()

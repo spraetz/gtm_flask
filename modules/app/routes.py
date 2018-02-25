@@ -1,6 +1,7 @@
 import StringIO
 import csv
 
+import datetime
 from flask import Blueprint, render_template, request, url_for, redirect, make_response
 from flask_login import login_required
 
@@ -77,7 +78,7 @@ def do_delete_account(account_id):
     return redirect(url_for("app_blueprint.show_accounts"))
 
 
-@app_blueprint.route("export", methods=["POST"])
+@app_blueprint.route("accounts/export", methods=["POST"])
 def do_export_accounts():
     si = StringIO.StringIO()
     cw = csv.writer(si)
@@ -89,6 +90,7 @@ def do_export_accounts():
         cw.writerow(account.get_field_values())
 
     output = make_response(si.getvalue())
-    output.headers["Content-Disposition"] = "attachment; filename=export.csv"
+    output.headers["Content-Disposition"] = "attachment; filename={}-accounts.csv".format(datetime.datetime.today().
+                                                                                          isoformat())
     output.headers["Content-type"] = "text/csv"
     return output
