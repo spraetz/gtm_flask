@@ -36,6 +36,8 @@ class Subscription(BaseModel):
     voice_alerts = db.Column(db.Boolean, default=False)
     voice_alerts_phone = db.Column(db.String(64), default="home_phone")  # Either "home_phone" or "mobile_phone"
 
+    MINIMUM_SUBSCRIPTION_LENGTH_DAYS = 30
+
     def get_account(self):
         return account.Account.query.filter_by(id=self.account_id).first()
 

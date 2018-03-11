@@ -143,7 +143,7 @@ def do_save_subscription(account_id, subscription_id):
         subscription.save()
         return redirect(url_for("app_blueprint.show_account", account_id=account.id))
 
-    return render_template("subscription.html", form=form, account=account, subscription=subscription)
+    return render_template("subscription.html", form=form, account=account, subscription=subscription), 400
 
 
 # TODO: Remove

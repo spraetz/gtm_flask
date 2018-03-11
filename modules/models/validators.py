@@ -1,4 +1,5 @@
 from wtforms import ValidationError
+import datetime
 
 
 class Unique:
@@ -25,4 +26,16 @@ class GreaterThan:
     def __call__(self, form, field):
 
         if field.data < form[self.field_name].data:
+            raise ValidationError(self.message)
+
+
+class DaysBetween:
+    def __init__(self, field_name, days_between, message):
+        self.field_name = field_name
+        self.message = message
+        self.days_between = days_between
+
+    def __call__(self, form, field):
+
+        if (field.data - form[self.field_name].data).days < self.days_between:
             raise ValidationError(self.message)

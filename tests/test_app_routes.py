@@ -3,7 +3,7 @@ from flask import url_for
 
 from modules.models.account import Account
 from tests.base_test import BaseTest
-from modules.models.subscription import SubscriptionStatuses, SubscriptionTypes
+from modules.models.subscription import Subscription, SubscriptionStatuses, SubscriptionTypes
 
 
 class AppTest(BaseTest):
@@ -287,3 +287,22 @@ class TestDoSaveSubscription(AppTest):
         # Assert the record got modified
         self.subscription.refresh()
         self.assertEqual(self.subscription.end_date, new_end_date)
+
+    def test_failure_subscription_too_short(self):
+
+        new_end_date = self.subscription.start_date + datetime.timedelta(days=Subscription.MINIMUM_SUBSCRIPTION_LENGTH_DAYS - 1)
+
+        form_data = {
+            "id": self.subscription.id,
+            "account_id": self.account.id,
+            "type": SubscriptionTypes.paid,
+            "status": SubscriptionStatuses.active,
+            "start_date": "2018-01-01",
+            "end_date": new_end_date,
+            "voice_alerts_phone": "home_phone"
+        }
+
+        response = self.client.post(self.get_url(), data=form_data, follow_redirects=False)
+        self.assert_400(response, response.data)
+        self.assertIn("<label for=\"end_date\">End Date</label>: Subscriptions must be at least 30 days long.",
+                      response.data, response.data)

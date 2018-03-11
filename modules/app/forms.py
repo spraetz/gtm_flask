@@ -4,8 +4,8 @@ from wtforms.validators import DataRequired, Length
 from wtforms.widgets import HiddenInput
 
 from modules.models.account import Account
-from modules.models.subscription import SubscriptionTypes, SubscriptionStatuses
-from modules.models.validators import Unique, GreaterThan
+from modules.models.subscription import Subscription, SubscriptionTypes, SubscriptionStatuses
+from modules.models.validators import Unique, GreaterThan, DaysBetween
 
 
 class AccountForm(FlaskForm):
@@ -19,7 +19,6 @@ class AccountForm(FlaskForm):
     mobile_phone = StringField("Mobile", validators=[Length(Account.home_phone.property.columns[0].type.length,
                                                             Account.home_phone.property.columns[0].type.length,
                                                             "Phone numbers must be 10 numbers (eg: 8152734354)")])
-
     street_address = StringField("Street")
     secondary_address = StringField("Secondary")
     city = StringField("City")
@@ -37,7 +36,12 @@ class SubscriptionForm(FlaskForm):
                                             (SubscriptionStatuses.expired, "Expired"),
                                             (SubscriptionStatuses.converted, "Converted")])
     start_date = DateField("Start Date")
-    end_date = DateField("End Date", validators=[GreaterThan("start_date", "End Date must be after Start Date")])
+    end_date = DateField("End Date",
+                         validators=[GreaterThan("start_date", "End Date must be after Start Date"),
+                                     DaysBetween("start_date",
+                                                 Subscription.MINIMUM_SUBSCRIPTION_LENGTH_DAYS,
+                                                 "Subscriptions must be at least {} days long.".
+                                                 format(Subscription.MINIMUM_SUBSCRIPTION_LENGTH_DAYS))])
     text_alerts = BooleanField("Text Alerts")
     voice_alerts = BooleanField("Voice Alerts")
     voice_alerts_phone = SelectField("Voice Alerts Phone", choices=[("home_phone", "Home Phone"),
