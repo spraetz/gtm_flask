@@ -4,7 +4,7 @@ from wtforms.validators import DataRequired, Length
 from wtforms.widgets import HiddenInput
 
 from modules.models.account import Account
-from modules.models.subscription import SubscriptionTypes
+from modules.models.subscription import SubscriptionTypes, SubscriptionStatuses
 from modules.models.validators import Unique
 
 
@@ -33,6 +33,9 @@ class SubscriptionForm(FlaskForm):
     type = SelectField("Type", choices=[(SubscriptionTypes.trial, "Trial"),
                                         (SubscriptionTypes.paid, "Paid"),
                                         (SubscriptionTypes.free, "Free")])
+    status = SelectField("Status", choices=[(SubscriptionStatuses.active, "Active"),
+                                            (SubscriptionStatuses.expired, "Expired"),
+                                            (SubscriptionStatuses.converted, "Converted")])
     start_date = DateField("Start Date")
     end_date = DateField("End Date")
     text_alerts = BooleanField("Text Alerts")

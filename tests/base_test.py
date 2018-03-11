@@ -6,7 +6,7 @@ from flask_testing import TestCase
 from run import db, create_app
 from modules.models.user import User
 from modules.models.account import Account
-from modules.models.subscription import Subscription
+from modules.models.subscription import Subscription, SubscriptionTypes, SubscriptionStatuses
 
 
 class BaseTest(TestCase):
@@ -43,8 +43,8 @@ class BaseTest(TestCase):
         return account
 
     @staticmethod
-    def create_subscription(account):
-        subscription = Subscription(account_id=account.id)
+    def create_subscription(account, sub_type=SubscriptionTypes.trial, status=SubscriptionStatuses.active):
+        subscription = Subscription(account_id=account.id, type=sub_type, status=status)
         subscription.save()
         return subscription
 
