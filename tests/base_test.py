@@ -1,5 +1,6 @@
 from __future__ import print_function
 
+import datetime
 from flask import url_for
 from flask_testing import TestCase
 
@@ -44,7 +45,11 @@ class BaseTest(TestCase):
 
     @staticmethod
     def create_subscription(account, sub_type=SubscriptionTypes.trial, status=SubscriptionStatuses.active):
-        subscription = Subscription(account_id=account.id, type=sub_type, status=status)
+        subscription = Subscription(account_id=account.id,
+                                    type=sub_type,
+                                    status=status,
+                                    start_date="2018-01-01",
+                                    end_date="2019-01-01")
         subscription.save()
         return subscription
 

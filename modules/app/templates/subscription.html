@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Create Subscription
+    {{ "Edit" if subscription and subscription.id else "Create" }} Subscription
 {% endblock title %}
 
 {% block content %}
-    <form method="POST" class="is-invalid" action="{{ url_for("app_blueprint.do_save_subscription", account_id=account.id, subscription_id=subscription.id) if subscription else url_for("app_blueprint.do_create_subscription") }}">
+    <form method="POST" class="is-invalid" action="{{ url_for("app_blueprint.do_save_subscription", account_id=account.id, subscription_id=subscription.id) if subscription else url_for("app_blueprint.do_create_subscription", account_id=account.id) }}">
         {% if form.errors %}
             <div class="text-danger">
                 <ul class="errors">
@@ -23,13 +23,13 @@
         {% endif %}
         {{ form.account_id(value=account.id) }}
         <div class="form-group row">
-            <label for="status" class="col-sm-2 col-form-label">Account</label>
+            <label for="account" class="col-sm-2 col-form-label">Account</label>
             <div class="col">
-                <input class="form-control" type="text" disabled value="{{ account.first_name }} {{ account.last_name }} - {{ account.email }}">
+                <input id="account" name="account" class="form-control" type="text" disabled value="{{ account.first_name }} {{ account.last_name }} - {{ account.email }}">
             </div>
         </div>
         <div class="form-group row">
-            <label for="status" class="col-sm-2 col-form-label">{{ form.type.label }}</label>
+            <label for="type" class="col-sm-2 col-form-label">{{ form.type.label }}</label>
             <div class="col-sm-2">
                 {{ form.type(class="form-control", id="type")}}
             </div>
@@ -43,31 +43,31 @@
         </div>
         {% endif %}
         <div class="form-group row">
-            <label for="status" class="col-sm-2 col-form-label">{{ form.start_date.label }}</label>
+            <label for="start-date" class="col-sm-2 col-form-label">{{ form.start_date.label }}</label>
             <div class="col-sm-2">
                 {{ form.start_date(class="form-control", id="start-date", placeholder="YYYY-MM-DD", required=true) }}
             </div>
         </div>
         <div class="form-group row">
-            <label for="status" class="col-sm-2 col-form-label">{{ form.end_date.label }}</label>
+            <label for="end-date" class="col-sm-2 col-form-label">{{ form.end_date.label }}</label>
             <div class="col-sm-2">
                 {{ form.end_date(class="form-control", id="end-date", placeholder="YYYY-MM-DD", required=true) }}
             </div>
         </div>
         <div class="form-group row">
-            <label for="status" class="col-sm-2 col-form-label">{{ form.text_alerts.label }}</label>
+            <label for="text-alerts" class="col-sm-2 col-form-label">{{ form.text_alerts.label }}</label>
             <div class="col-sm-2">
                 {{ form.text_alerts(class="form-control-check", id="text-alerts") }}
             </div>
         </div>
         <div class="form-group row">
-            <label for="status" class="col-sm-2 col-form-label">{{ form.voice_alerts.label }}</label>
+            <label for="voice-alerts" class="col-sm-2 col-form-label">{{ form.voice_alerts.label }}</label>
             <div class="col-sm-2">
                 {{ form.voice_alerts(class="form-control-check", id="voice-alerts") }}
             </div>
         </div>
         <div class="form-group row">
-            <label for="status" class="col-sm-2 col-form-label">{{ form.voice_alerts_phone.label }}</label>
+            <label for="voice-alerts-phone" class="col-sm-2 col-form-label">{{ form.voice_alerts_phone.label }}</label>
             <div class="col-sm-2">
                 {{ form.voice_alerts_phone(class="form-control", id="voice-alerts-phone") }}
             </div>

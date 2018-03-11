@@ -1,7 +1,9 @@
+import datetime
 from flask import url_for
 
 from modules.models.account import Account
 from tests.base_test import BaseTest
+from modules.models.subscription import SubscriptionStatuses, SubscriptionTypes
 
 
 class AppTest(BaseTest):
@@ -14,6 +16,7 @@ class AppTest(BaseTest):
 
         # Create some test data
         self.account = self.create_account()
+        self.subscription = self.create_subscription(self.account)
 
 
 class TestShowHome(AppTest):
@@ -188,3 +191,99 @@ class TestDoSaveAccount(AppTest):
 # TODO
 class TestDoExportAccounts(AppTest):
     pass
+
+
+class TestShowSubscription(AppTest):
+    def get_url(self):
+        return url_for("app_blueprint.show_subscription", account_id=self.account.id,
+                       subscription_id=self.subscription.id)
+
+    def test_page_loads(self):
+        response = self.client.get(self.get_url(), follow_redirects=False)
+        self.assert_200(response, response.data)
+
+    def test_login_required(self):
+        self.logout_user()
+        response = self.client.get(self.get_url(), follow_redirects=False)
+        self.assert_401(response, response.data)
+
+
+class TestShowCreateSubscription(AppTest):
+    def get_url(self):
+        return url_for("app_blueprint.show_create_subscription", account_id=self.account.id)
+
+    def test_page_loads(self):
+        response = self.client.get(self.get_url(), follow_redirects=False)
+        self.assert_200(response, response.data)
+
+    def test_login_required(self):
+        self.logout_user()
+        response = self.client.get(self.get_url(), follow_redirects=False)
+        self.assert_401(response, response.data)
+
+
+class TestDoCreateSubscription(AppTest):
+    def get_url(self):
+        return url_for("app_blueprint.do_create_subscription", account_id=self.account.id)
+
+    def test_success(self):
+
+        form_data = {
+            "account_id": self.account.id,
+            "type": SubscriptionTypes.paid,
+            "status": SubscriptionStatuses.active,
+            "start_date": "2018-01-01",
+            "end_date": "2019-01-01",
+            "voice_alerts_phone": "home_phone"
+        }
+
+        response = self.client.post(self.get_url(), data=form_data, follow_redirects=False)
+        self.assert_redirects(response, url_for("app_blueprint.show_account", account_id=self.account.id),
+                              response.data)
+
+        # Find the created record
+        self.assertEqual(len(self.account.get_subscriptions()), 2)
+
+    def test_failure_start_date_after_end_date(self):
+
+        form_data = {
+            "account_id": self.account.id,
+            "type": SubscriptionTypes.paid,
+            "status": SubscriptionStatuses.active,
+            "start_date": "2018-01-01",
+            "end_date": "2017-01-01",  # Note the end date is a year before the start date
+            "voice_alerts_phone": "home_phone"
+        }
+
+        response = self.client.post(self.get_url(), data=form_data)
+        self.assert_400(response)
+        self.assertIn("<label for=\"end_date\">End Date</label>: End Date must be after Start Date", response.data,
+                      response.data)
+
+
+class TestDoSaveSubscription(AppTest):
+    def get_url(self):
+        return url_for("app_blueprint.do_save_subscription", account_id=self.account.id,
+                       subscription_id=self.subscription.id)
+
+    def test_success(self):
+
+        new_end_date = self.subscription.end_date + datetime.timedelta(days=365)
+
+        form_data = {
+            "id": self.subscription.id,
+            "account_id": self.account.id,
+            "type": SubscriptionTypes.paid,
+            "status": SubscriptionStatuses.active,
+            "start_date": "2018-01-01",
+            "end_date": new_end_date,
+            "voice_alerts_phone": "home_phone"
+        }
+
+        response = self.client.post(self.get_url(), data=form_data, follow_redirects=False)
+        self.assert_redirects(response, url_for("app_blueprint.show_account", account_id=self.account.id),
+                              response.data)
+
+        # Assert the record got modified
+        self.subscription.refresh()
+        self.assertEqual(self.subscription.end_date, new_end_date)

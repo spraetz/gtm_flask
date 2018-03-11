@@ -5,7 +5,7 @@ from wtforms.widgets import HiddenInput
 
 from modules.models.account import Account
 from modules.models.subscription import SubscriptionTypes, SubscriptionStatuses
-from modules.models.validators import Unique
+from modules.models.validators import Unique, GreaterThan
 
 
 class AccountForm(FlaskForm):
@@ -37,7 +37,7 @@ class SubscriptionForm(FlaskForm):
                                             (SubscriptionStatuses.expired, "Expired"),
                                             (SubscriptionStatuses.converted, "Converted")])
     start_date = DateField("Start Date")
-    end_date = DateField("End Date")
+    end_date = DateField("End Date", validators=[GreaterThan("start_date", "End Date must be after Start Date")])
     text_alerts = BooleanField("Text Alerts")
     voice_alerts = BooleanField("Voice Alerts")
     voice_alerts_phone = SelectField("Voice Alerts Phone", choices=[("home_phone", "Home Phone"),

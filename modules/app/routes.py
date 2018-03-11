@@ -139,9 +139,6 @@ def do_save_subscription(account_id, subscription_id):
     form = SubscriptionForm(request.form)
     form.populate_obj(subscription)
 
-    print subscription.status
-    print form.status.data
-
     if form.validate_on_submit():
         subscription.save()
         return redirect(url_for("app_blueprint.show_account", account_id=account.id))
