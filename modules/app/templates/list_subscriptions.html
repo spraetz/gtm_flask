@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Subscriptions{% endblock %}
+{% block content %}
+
+
+    <a href="{{ url_for("app_blueprint.show_create_account") }}"><button type="button" class="btn btn-primary">Create Subscription</button></a>
+    <form method="POST" action="{{ url_for("app_blueprint.do_export_accounts") }}" style="display:inline">
+        <button type="submit" class="btn btn-secondary">Export to CSV</button>
+    </form>
+    <ul>
+        {% for subscription in subscriptions %}
+            <li><a href="{{ url_for("app_blueprint.show_subscription", subscription_id=subscription.id) }}">{{ subscription.id }}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock content %}

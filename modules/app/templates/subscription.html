@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Create Subscription
+{% endblock title %}
+
+{% block content %}
+    <form method="POST" class="is-invalid" action="{{ url_for("app_blueprint.do_create_subscription", account_id=account.id)}}">
+        {% if form.errors %}
+            <div class="text-danger">
+                <ul class="errors">
+                    {% for field_name, field_errors in form.errors|dictsort if field_errors %}
+                        {% for error in field_errors %}
+                            <li>{{ form[field_name].label }}: {{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        {{ form.csrf_token }}
+        {% if subscription and subscription.id %}
+            {{ form.id(id="id", value=subscription.id) }}
+        {% endif %}
+        {{ form.account_id(value=account.id) }}
+        <div class="form-group row">
+            <label for="status" class="col-sm-2 col-form-label">Account</label>
+            <div class="col">
+                <input class="form-control" type="text" disabled value="{{ account.first_name }} {{ account.last_name }} - {{ account.email }}">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="status" class="col-sm-2 col-form-label">{{ form.type.label }}</label>
+            <div class="col-sm-2">
+                {{ form.type(class="form-control", id="type", placeholder="Type", value=subscription.type if subscription and subscription.type, required=true) }}
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="status" class="col-sm-2 col-form-label">{{ form.start_date.label }}</label>
+            <div class="col-sm-2">
+                {{ form.start_date(class="form-control", id="start-date", placeholder="YYYY-MM-DD", value=subscription.start_date if subscription and subscription.start_date, required=true) }}
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="status" class="col-sm-2 col-form-label">{{ form.end_date.label }}</label>
+            <div class="col-sm-2">
+                {{ form.end_date(class="form-control", id="end-date", placeholder="YYYY-MM-DD", value=subscription.end_date if subscription and subscription.end_date, required=true) }}
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="status" class="col-sm-2 col-form-label">{{ form.text_alerts.label }}</label>
+            <div class="col-sm-2">
+                {{ form.text_alerts(class="form-control-check", type="checkbox", id="text-alerts", value=subscription.text_alerts if subscription and subscription.text_alerts) }}
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="status" class="col-sm-2 col-form-label">{{ form.voice_alerts.label }}</label>
+            <div class="col-sm-2">
+                {{ form.voice_alerts(class="form-control-check", type="checkbox", id="text-alerts", value=subscription.voice_alerts if subscription and subscription.voice_alerts) }}
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="status" class="col-sm-2 col-form-label">{{ form.voice_alerts_phone.label }}</label>
+            <div class="col-sm-2">
+                {{ form.voice_alerts_phone(class="form-control", id="text-alerts", value=subscription.voice_alerts_phone if subscription and subscription.voice_alerts_phone) }}
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-10">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </form>
+{% endblock content %}

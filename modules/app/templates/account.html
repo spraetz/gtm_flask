@@ -86,4 +86,39 @@
     </form>
     {% endif %}
 
+    {% if account and account.id %}
+    <h2>
+    Subscriptions
+    </h2>
+    <div class="row col-12">
+        <a href="{{ url_for("app_blueprint.show_create_subscription", account_id=account.id) }}">
+            <button class="btn btn-primary">Create Subscription</button>
+        </a>
+    </div>
+    <div class="row col-12">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Actions</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Start</th>
+                    <th scope="col">End</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for subscription in subscriptions %}
+                <tr>
+                    <td>Edit</td>
+                    <td>{{ subscription.type }}</td>
+                    <td>{{ subscription.status }}</td>
+                    <td>{{ subscription.start_date }}</td>
+                    <td>{{ subscription.end_date }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
 {% endblock content %}

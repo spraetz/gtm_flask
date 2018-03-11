@@ -1,9 +1,10 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField
+from wtforms import StringField, IntegerField, SelectField, DateField, BooleanField
 from wtforms.validators import DataRequired, Length
 from wtforms.widgets import HiddenInput
 
 from modules.models.account import Account
+from modules.models.subscription import SubscriptionTypes
 from modules.models.validators import Unique
 
 
@@ -24,3 +25,17 @@ class AccountForm(FlaskForm):
     city = StringField("City")
     state = StringField("State")
     zip_code = StringField("Zip Code")
+
+
+class SubscriptionForm(FlaskForm):
+    id = IntegerField(widget=HiddenInput())
+    account_id = IntegerField(widget=HiddenInput())
+    type = SelectField("Type", choices=[(SubscriptionTypes.trial, "Trial"),
+                                        (SubscriptionTypes.paid, "Paid"),
+                                        (SubscriptionTypes.free, "Free")])
+    start_date = DateField("Start Date")
+    end_date = DateField("End Date")
+    text_alerts = BooleanField("Text Alerts")
+    voice_alerts = BooleanField("Voice Alerts")
+    voice_alerts_phone = SelectField("Voice Alerts Phone", choices=[("home_phone", "Home Phone"),
+                                                                    ("mobile_phone", "Mobile Phone")])
