@@ -12,9 +12,23 @@ Do your work in master and simply push to staging or production to deploy.
 
 ## Running the application locally
 
-To run the app, use this terminal command
+To run the app locally, create a new config file called "config_local.py" in the project root directory.  It should contain a class called DevelopmentConfig and inherit from config.Config
+```
+from config import Config
 
-`export environment=config.DevelopmentConfig && python app.py`
+
+class DevelopmentConfig(Config):
+    NAME = "DEVELOPMENT"
+    DEVELOPMENT = True
+    DEBUG = True
+    SQLALCHEMY_DATABASE_URI = "postgresql://localhost/gtm_development" 
+```
+
+Finally, use this terminal command
+
+`export environment=config_local.DevelopmentConfig && python app.py`
+
+Note that this file is in the `.gitignore` so you can put API keys here 
 
 ### First time running in any environment
 
