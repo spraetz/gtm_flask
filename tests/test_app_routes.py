@@ -290,7 +290,8 @@ class TestDoSaveSubscription(AppTest):
 
     def test_failure_subscription_too_short(self):
 
-        new_end_date = self.subscription.start_date + datetime.timedelta(days=Subscription.MINIMUM_SUBSCRIPTION_LENGTH_DAYS - 1)
+        new_end_date = self.subscription.start_date + datetime.timedelta(
+            days=Subscription.MINIMUM_SUBSCRIPTION_LENGTH_DAYS - 1)
 
         form_data = {
             "id": self.subscription.id,
