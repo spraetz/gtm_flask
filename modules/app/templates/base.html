@@ -13,10 +13,10 @@
     {% block body %}
         {% block header %}
             <h1>Email Subscription Manager</h1>
-            <ul>
-                <li><a href="{{ url_for("app_blueprint.show_home") }}">Home</a></li>
-                <li><a href="{{ url_for("app_blueprint.show_accounts") }}">Accounts</a></li>
-                <li><a href="{{ url_for("app_blueprint.show_subscriptions") }}">Subscriptions</a></li>
+            <ul class="list-inline">
+                <li class="list-inline-item"><a href="{{ url_for("app_blueprint.show_home") }}">Home</a></li>
+                <li class="list-inline-item"><a href="{{ url_for("app_blueprint.show_accounts") }}">Accounts</a></li>
+                <li class="list-inline-item"><a href="{{ url_for("app_blueprint.show_subscriptions") }}">Subscriptions</a></li>
             </ul>
         {% endblock header %}
         <hr>

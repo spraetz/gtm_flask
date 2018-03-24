@@ -38,24 +38,11 @@ class Subscription(BaseModel):
 
     MINIMUM_SUBSCRIPTION_LENGTH_DAYS = 30
 
+    def is_overdue(self):
+        return self.end_date < datetime.date.today()
+
     def get_account(self):
         return account.Account.query.filter_by(id=self.account_id).first()
-
-    def start_on_trial(self):
-        self.status = SubscriptionStatuses.active
-        self.type = SubscriptionTypes.trial
-        self.start_date = datetime.date.today()
-        self.end_date = self.trial_start_date + datetime.timedelta(days=56)
-
-        # TODO: Call out to MailChimp
-        self.save()
-
-    def expire_trial(self):
-        self.status = SubscriptionStatuses.expired
-        self.expired_date = datetime.date.today()
-
-        # TODO: Remove from MailChimp list.
-        self.save()
 
     def start_subscription(self):
         self.status = SubscriptionStatuses.active
@@ -72,7 +59,7 @@ class Subscription(BaseModel):
         # TODO: Remove from MailChimp
         self.save()
 
-    def renew_subscription(self):
+    def convert_subscription(self):
         self.status = SubscriptionStatuses.converted
         self.save()
 

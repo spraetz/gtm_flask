@@ -146,6 +146,26 @@ def do_save_subscription(account_id, subscription_id):
     return render_template("subscription.html", form=form, account=account, subscription=subscription), 400
 
 
+@app_blueprint.route("accounts/<account_id>/subscriptions/<subscription_id>/convert", methods=["POST"])
+@login_required
+def do_convert_subscription(account_id, subscription_id):
+    account = Account.get_by_id(account_id)
+    subscription = Subscription.get_by_id(subscription_id)
+
+    subscription.convert_subscription()
+    return redirect(url_for("app_blueprint.show_account", account_id=account.id))
+
+
+@app_blueprint.route("accounts/<account_id>/subscriptions/<subscription_id>/expire", methods=["POST"])
+@login_required
+def do_expire_subscription(account_id, subscription_id):
+    account = Account.get_by_id(account_id)
+    subscription = Subscription.get_by_id(subscription_id)
+
+    subscription.expire_subscription()
+    return redirect(url_for("app_blueprint.show_account", account_id=account.id))
+
+
 # TODO: Remove
 @app_blueprint.route("subscriptions")
 @login_required

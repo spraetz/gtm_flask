@@ -24,6 +24,7 @@ class AccountForm(FlaskForm):
     city = StringField("City")
     state = StringField("State")
     zip_code = StringField("Zip Code")
+    default_subscription_price = IntegerField("Price")
 
 
 class SubscriptionForm(FlaskForm):

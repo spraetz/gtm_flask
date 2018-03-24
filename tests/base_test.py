@@ -39,6 +39,9 @@ class BaseTest(TestCase):
     def create_account(email="bob@aol.com"):
         account = Account()
         account.email = email
+        account.default_subscription_price = 12500
+        account.first_name = "Bob"
+        account.last_name = "Aol.com"
         account.save()
         return account
 
