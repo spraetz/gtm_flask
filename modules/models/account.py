@@ -23,6 +23,9 @@ class Account(BaseModel):
     state = db.Column(db.String(2))
     zip_code = db.Column(db.String(5))
 
+    # Info fields
+    default_subscription_price = db.Column(db.Integer())
+
     def __repr__(self):
         return "<Account object: id={} email={}>".format(self.id, self.email)
 

@@ -45,6 +45,7 @@ Use the following command in the `gtm_flask` directory to run tests:
 If you make changes to the local ORM, you'll need to reflect them in the database.
 To do so, run the following commands: 
 ```
+export environment=config_local.DevelopmentConfig
 python manage.py db migrate
 python manage.py db upgrade
 ```

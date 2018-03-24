@@ -11,7 +11,7 @@ from modules.errors.handlers import register_error_handlers
 
 
 def create_app():
-    application = Flask(__name__)
+    application = Flask(__name__, template_folder="lib/email_templates")
 
     # This sets the config to whatever was passed in
     application.config.from_object(os.environ['environment'])

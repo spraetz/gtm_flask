@@ -1,5 +1,3 @@
-from modules.models.account import Account
-from modules.models.subscription import Subscription
 from tests.base_test import BaseTest
 
 
