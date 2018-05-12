@@ -10,6 +10,8 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SENDGRID_API_KEY = os.environ.get("SENDGRID_API_KEY")
+    MAILCHIMP_API_KEY = os.environ.get("MAILCHIMP_API_KEY")
+    MAILCHIMP_LIST_ID = os.environ.get("MAILCHIMP_LIST_ID")
 
 
 class ProductionConfig(Config):
