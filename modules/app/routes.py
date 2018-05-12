@@ -30,7 +30,7 @@ def show_accounts():
 @login_required
 def show_account(account_id):
     account = Account.get_by_id(account_id)
-    subscriptions = account.get_subscriptions()
+    subscriptions = account.get_subscriptions(active_only=True)
     form = AccountForm(obj=account)
 
     return render_template("account.html", form=form, account=account, subscriptions=subscriptions)
@@ -111,11 +111,15 @@ def show_create_subscription(account_id):
 @login_required
 def do_create_subscription(account_id):
     form = SubscriptionForm(request.form)
+    # All subscriptions are active when created.
+    form.status.data = SubscriptionStatuses.active
+
     account = Account.get_by_id(account_id)
-    subscription = Subscription(status=SubscriptionStatuses.active)
+    subscription = Subscription()
     form.populate_obj(subscription)
 
     if form.validate_on_submit():
+        subscription.add_to_mailing_list()
         subscription.save()
         return redirect(url_for("app_blueprint.show_account", account_id=account.id))
 
@@ -128,6 +132,7 @@ def show_subscription(account_id, subscription_id):
     account = Account.get_by_id(account_id)
     subscription = Subscription.get_by_id(subscription_id)
     form = SubscriptionForm(obj=subscription)
+
     return render_template("subscription.html", form=form, account=account, subscription=subscription)
 
 

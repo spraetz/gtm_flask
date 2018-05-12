@@ -3,6 +3,7 @@ from base import BaseModel
 from database import db
 from enum import Enum
 import datetime
+from lib.mailing_list import add_to_list, remove_from_list
 
 
 class SubscriptionStatuses(Enum):
@@ -28,8 +29,6 @@ class Subscription(BaseModel):
     start_date = db.Column(db.Date)
     end_date = db.Column(db.Date)
     expired_date = db.Column(db.Date)
-    converted_date = db.Column(db.Date)
-    conversion_emails_sent = db.Column(db.Integer, nullable=True)
 
     # Phone alerts
     text_alerts = db.Column(db.Boolean, default=True)
@@ -44,28 +43,28 @@ class Subscription(BaseModel):
     def get_account(self):
         return account.Account.query.filter_by(id=self.account_id).first()
 
-    def start_subscription(self):
-        self.status = SubscriptionStatuses.active
-        self.type = SubscriptionTypes.paid
-        self.start_date = datetime.date.today()
-        self.end_date = datetime.date.today() + datetime.timedelta(days=365)
-
-        # TODO: Add to MailChimp
-        self.save()
+    def add_to_mailing_list(self):
+        if self.status != SubscriptionStatuses.active:
+            raise Exception("Cannot add a non-active subscription to mailing list.")
+        add_to_list(self.get_account())
 
     def expire_subscription(self):
         self.status = SubscriptionStatuses.expired
 
-        # TODO: Remove from MailChimp
+        remove_from_list(self.get_account())
         self.save()
 
     def convert_subscription(self):
         self.status = SubscriptionStatuses.converted
         self.save()
 
-        # TODO: Make sure you can't double add someone to MailChimp
         new_sub = Subscription(status=SubscriptionStatuses.active,
                                type=SubscriptionTypes.paid,
-                               account_id=self.account_id)
+                               account_id=self.account_id,
+                               start_date=self.end_date,
+                               end_date=self.end_date + datetime.timedelta(days=365),
+                               text_alerts=self.text_alerts,
+                               voice_alerts=self.voice_alerts,
+                               voice_alerts_phone=self.voice_alerts_phone)
+
         new_sub.save()
-        new_sub.start_subscription()

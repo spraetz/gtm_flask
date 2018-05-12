@@ -231,7 +231,6 @@ class TestDoCreateSubscription(AppTest):
         form_data = {
             "account_id": self.account.id,
             "type": SubscriptionTypes.paid,
-            "status": SubscriptionStatuses.active,
             "start_date": "2018-01-01",
             "end_date": "2019-01-01",
             "voice_alerts_phone": "home_phone"
@@ -249,7 +248,6 @@ class TestDoCreateSubscription(AppTest):
         form_data = {
             "account_id": self.account.id,
             "type": SubscriptionTypes.paid,
-            "status": SubscriptionStatuses.active,
             "start_date": "2018-01-01",
             "end_date": "2017-01-01",  # Note the end date is a year before the start date
             "voice_alerts_phone": "home_phone"

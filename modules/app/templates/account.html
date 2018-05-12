@@ -101,8 +101,9 @@
             Create Subscription
         </a>
     </div>
+    {% if subscriptions %}
     <div class="row col-12">
-        <table class="table">
+        <table class="table table-hover">
             <thead>
                 <tr>
                     <th scope="col">Actions</th>
@@ -118,7 +119,7 @@
                     <td>
                         <a class="btn btn-link" href="{{ url_for("app_blueprint.show_subscription", account_id=account.id, subscription_id=subscription.id) }}">Edit</a>
                         |<form class="d-inline" action="{{ url_for("app_blueprint.do_convert_subscription", account_id=subscription.account_id, subscription_id=subscription.id) }}" method="POST"><input type="submit" value="{{ "Convert" if subscription.type == "trial" else "Renew" }}" class="btn btn-link"></form>
-                        |<form class="d-inline" action="" method="POST"><input type="submit" value="Expire" class="btn btn-link"></form>
+                        |<form class="d-inline" action="{{ url_for("app_blueprint.do_expire_subscription", account_id=subscription.account_id, subscription_id=subscription.id) }}" method="POST"><input type="submit" value="Expire" class="btn btn-link"></form>
                     </td>
                     <td>{{ subscription.type }}</td>
                     <td>{{ subscription.status }}</td>
@@ -129,6 +130,7 @@
             </tbody>
         </table>
     </div>
+    {% endif %}
     {% endif %}
 
 {% endblock content %}

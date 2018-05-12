@@ -2,7 +2,7 @@ from sqlalchemy.orm.attributes import InstrumentedAttribute
 
 from base import BaseModel
 from database import db
-from subscription import Subscription
+from subscription import Subscription, SubscriptionStatuses
 
 
 class Account(BaseModel):
@@ -36,5 +36,8 @@ class Account(BaseModel):
     def get_field_values(self):
         return [getattr(self, field) for field in self.get_fields()]
 
-    def get_subscriptions(self):
-        return Subscription.query.filter_by(account_id=self.id).all()
+    def get_subscriptions(self, active_only=False):
+        query = Subscription.query.filter_by(account_id=self.id)
+        if active_only:
+            query = query.filter_by(status=SubscriptionStatuses.active)
+        return query.all()
