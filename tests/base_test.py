@@ -6,6 +6,7 @@ from flask_testing import TestCase
 from modules.models.account import Account
 from modules.models.subscription import Subscription, SubscriptionTypes, SubscriptionStatuses
 from modules.models.user import User
+from modules.models.workflow import ConversionWorkflow
 from run import db, create_app
 
 
@@ -56,6 +57,15 @@ class BaseTest(TestCase):
                                     end_date=end_date)
         subscription.save()
         return subscription
+
+    @staticmethod
+    def create_conversion_workflow_state(subscription, status):
+
+        workflow_state = ConversionWorkflow()
+        workflow_state.subscription_id = subscription.id
+        workflow_state.status = status
+        workflow_state.save()
+        return workflow_state
 
     def login_user(self, user):
         # Login the user (and make sure it was successful)
