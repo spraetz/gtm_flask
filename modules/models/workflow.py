@@ -33,10 +33,31 @@ class ConversionWorkflow(Workflow):
         return Subscription.get_by_id(self.subscription_id)
 
     @classmethod
-    def get_items_due_today(cls):
+    def get_subscriptions_to_send_final_notice(cls):
         return ConversionWorkflow.query.join(Subscription).filter(Subscription.id == ConversionWorkflow.id). \
             filter(Subscription.end_date <= cls.days_later(0)). \
-            filter(ConversionWorkflow.status == ConversionWorkflowStatus.sent_one_week_notice). \
+            filter(ConversionWorkflow.status > ConversionWorkflowStatus.sent_final_notice). \
+            all()
+
+    @classmethod
+    def get_subscriptions_to_send_one_week_notice(cls):
+        return ConversionWorkflow.query.join(Subscription).filter(Subscription.id == ConversionWorkflow.id). \
+            filter(Subscription.end_date <= cls.days_later(7)). \
+            filter(ConversionWorkflow.status > ConversionWorkflowStatus.sent_one_week_notice). \
+            all()
+
+    @classmethod
+    def get_subscriptions_to_send_two_week_notice(cls):
+        return ConversionWorkflow.query.join(Subscription).filter(Subscription.id == ConversionWorkflow.id). \
+            filter(Subscription.end_date <= cls.days_later(14)). \
+            filter(ConversionWorkflow.status > ConversionWorkflowStatus.sent_two_week_notice). \
+            all()
+
+    @classmethod
+    def get_subscriptions_to_send_four_week_notice(cls):
+        return ConversionWorkflow.query.join(Subscription).filter(Subscription.id == ConversionWorkflow.id). \
+            filter(Subscription.end_date <= cls.days_later(28)). \
+            filter(ConversionWorkflow.status > ConversionWorkflowStatus.sent_four_week_notice). \
             all()
 
 

@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 from flask import url_for
 from flask_testing import TestCase
 
