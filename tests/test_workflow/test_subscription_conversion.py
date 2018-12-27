@@ -91,6 +91,10 @@ class TestConversionProcesses(ProcessBaseTest):
         workflow_state.refresh()
         self.assertEqual(workflow_state.status, ConversionWorkflowStatus.sent_final_notice)
 
+    # TODO: def test_free_subscriptions(self):
+
+    # TODO: def test_expired_and_converted_subscriptions(self):
+
     # Happy path for subscriptions due in seven days.
     def test_subscriptions_due_in_seven_days_process(self):
         # Create subscription with end_date 7 days from now.

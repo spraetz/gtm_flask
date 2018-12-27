@@ -26,7 +26,7 @@ class DevelopmentConfig(Config):
 
 Finally, use this terminal command
 
-`export environment=config_local.DevelopmentConfig && python app.py`
+`export environment=config_local.DevelopmentConfig && python run.py`
 
 Note that this file is in the `.gitignore` so you can put API keys here 
 

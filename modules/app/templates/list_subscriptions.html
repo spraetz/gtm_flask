@@ -9,7 +9,7 @@
     </form>
     <ul>
         {% for subscription in subscriptions %}
-            <li><a href="{{ url_for("app_blueprint.show_subscription", subscription_id=subscription.id) }}">{{ subscription.id }}</a></li>
+            <li><a href="{{ url_for("app_blueprint.show_subscription", subscription_id=subscription.id, account_id=subscription.account_id) }}">{{ subscription.id }}</a></li>
         {% endfor %}
     </ul>
 {% endblock content %}

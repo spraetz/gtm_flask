@@ -3,7 +3,7 @@ from database import db
 from enum import Enum
 import datetime
 
-from subscription import Subscription
+from subscription import Subscription, SubscriptionTypes, SubscriptionStatuses
 
 
 class Workflow(BaseModel):
@@ -37,6 +37,8 @@ class ConversionWorkflow(Workflow):
         return ConversionWorkflow.query.join(Subscription).filter(Subscription.id == ConversionWorkflow.id). \
             filter(Subscription.end_date <= cls.days_later(0)). \
             filter(ConversionWorkflow.status > ConversionWorkflowStatus.sent_final_notice). \
+            filter(Subscription.type != SubscriptionTypes.free). \
+            filter(Subscription.status == SubscriptionStatuses.active). \
             all()
 
     @classmethod
@@ -44,6 +46,8 @@ class ConversionWorkflow(Workflow):
         return ConversionWorkflow.query.join(Subscription).filter(Subscription.id == ConversionWorkflow.id). \
             filter(Subscription.end_date <= cls.days_later(7)). \
             filter(ConversionWorkflow.status > ConversionWorkflowStatus.sent_one_week_notice). \
+            filter(Subscription.type != SubscriptionTypes.free). \
+            filter(Subscription.status == SubscriptionStatuses.active). \
             all()
 
     @classmethod
@@ -51,6 +55,8 @@ class ConversionWorkflow(Workflow):
         return ConversionWorkflow.query.join(Subscription).filter(Subscription.id == ConversionWorkflow.id). \
             filter(Subscription.end_date <= cls.days_later(14)). \
             filter(ConversionWorkflow.status > ConversionWorkflowStatus.sent_two_week_notice). \
+            filter(Subscription.type != SubscriptionTypes.free). \
+            filter(Subscription.status == SubscriptionStatuses.active). \
             all()
 
     @classmethod
@@ -58,6 +64,8 @@ class ConversionWorkflow(Workflow):
         return ConversionWorkflow.query.join(Subscription).filter(Subscription.id == ConversionWorkflow.id). \
             filter(Subscription.end_date <= cls.days_later(28)). \
             filter(ConversionWorkflow.status > ConversionWorkflowStatus.sent_four_week_notice). \
+            filter(Subscription.type != SubscriptionTypes.free). \
+            filter(Subscription.status == SubscriptionStatuses.active). \
             all()
 
 

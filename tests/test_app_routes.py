@@ -193,6 +193,22 @@ class TestDoExportAccounts(AppTest):
     pass
 
 
+class TestShowSubscriptionList(AppTest):
+
+    @staticmethod
+    def get_url():
+        return url_for("app_blueprint.show_subscriptions")
+
+    def test_page_loads(self):
+        response = self.client.get(self.get_url(), follow_redirects=False)
+        self.assert_200(response, response.data)
+
+    def test_login_required(self):
+        self.logout_user()
+        response = self.client.get(self.get_url(), follow_redirects=False)
+        self.assert_401(response, response.data)
+
+
 class TestShowSubscription(AppTest):
     def get_url(self):
         return url_for("app_blueprint.show_subscription", account_id=self.account.id,
